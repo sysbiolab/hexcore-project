@@ -37,7 +37,6 @@ class AnnDataset(AbstractDataset):
         self.tags = tags
     
     def _load(self) -> Any:
-        print(self._filepath)
         return sc.read(
             self._filepath,
             backup_url=self.url
