@@ -6,7 +6,7 @@ authors = ["Victor Apolonio <victor.henrique.apolonio@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 ipython = ">=8.10"
 jupyterlab = ">=3.0"
 kedro-datasets = ">=3.0"
