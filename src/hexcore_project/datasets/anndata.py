@@ -38,7 +38,7 @@ class AnnDataset(AbstractDataset):
             data = file.read()
             for tag in self.tags:
                 data = data.replace(f'#{tag}'.encode(), b'')
-            return edn_format.loads_all(data, debug=True)
+            return 
     
     def _save(self, data) -> Any:
         """Saves image data to the specified filepath"""
