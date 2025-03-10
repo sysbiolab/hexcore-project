@@ -1,0 +1,4 @@
+model_cell_type_signatures:
+  epochs: 500
+  num_samples: 1000
+  batch_size: 2500

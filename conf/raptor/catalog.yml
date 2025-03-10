@@ -1,0 +1,13 @@
+multi_tissue_tumor_microenvironment_atlas:
+  type: hexcore_project.datasets.anndata.AnnDataset
+  filepath: data/raw/multi-tissue-tumor-microenvironment-atlas.h5ad
+  url: https://datasets.cellxgene.cziscience.com/07405240-4f64-4dd9-83c3-b3db3405b05c.h5ad
+  metadata:
+    layer: raw
+    publication: Guimarães et al. (2024) Nat Commun
+
+adata_ref:
+  type: hexcore_project.datasets.anndata.AnnDataset
+  filepath: data/filtered/adata_ref.h5ad
+  metadata:
+    layer: filtered

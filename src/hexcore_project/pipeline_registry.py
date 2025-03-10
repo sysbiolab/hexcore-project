@@ -3,6 +3,7 @@
 from kedro.framework.project import find_pipelines
 from kedro.pipeline import Pipeline
 
+from hexcore_project.pipelines import pipeline
 
 def register_pipelines() -> dict[str, Pipeline]:
     """Register the project's pipelines.
@@ -10,6 +11,5 @@ def register_pipelines() -> dict[str, Pipeline]:
     Returns:
         A mapping from pipeline names to ``Pipeline`` objects.
     """
-    pipelines = find_pipelines()
-    pipelines["__default__"] = sum(pipelines.values())
-    return pipelines
+    pipelines = pipeline.create_pipeline()
+    return {"__default__": Pipeline([pipelines])}

@@ -23,8 +23,16 @@ https://docs.kedro.org/en/stable/kedro_project_setup/settings.html."""
 # Directory that holds configuration.
 # CONF_SOURCE = "conf"
 
+
 # Class that manages how configuration is loaded.
 from kedro.config import OmegaConfigLoader  # noqa: E402
+from kedro_viz.integrations.kedro.sqlite_store import SQLiteStore
+from pathlib import Path
+import os
+import socket
+hostname = socket.gethostname()
+
+os.environ["KEDRO_SQLITE_STORE_USERNAME"] = hostname
 
 CONFIG_LOADER_CLASS = OmegaConfigLoader
 # Keyword arguments to pass to the `CONFIG_LOADER_CLASS` constructor.
@@ -35,6 +43,12 @@ CONFIG_LOADER_ARGS = {
 #           "spark" : ["spark*/"],
 #           "parameters": ["parameters*", "parameters*/**", "**/parameters*"],
 #       }
+}
+
+
+SESSION_STORE_CLASS = SQLiteStore
+SESSION_STORE_ARGS = {
+    "path": str(Path(__file__).parents[2] / "data/kedro-viz"),
 }
 
 # Class that manages Kedro's library components.

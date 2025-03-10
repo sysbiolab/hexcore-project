@@ -18,7 +18,7 @@ class AnnDataset(AbstractDataset):
     def __init__(self,         
         *,
         filepath: str,
-        url: str,
+        url: str | None = None,
         tags: list[str] = [],
         metadata: dict[str, Any] | None = None,) -> None:
         """Creates a new instance of AnnDataset to load / save data for given filepath or url.
@@ -31,6 +31,7 @@ class AnnDataset(AbstractDataset):
         protocol, path = get_protocol_and_path(filepath)
         self._protocol = protocol
         self.url = url
+        self.path = path
         self._filepath = PurePosixPath(path)
         self._fs = fsspec.filesystem(self._protocol)
         self.metadata = metadata
@@ -45,7 +46,7 @@ class AnnDataset(AbstractDataset):
     def _save(self, data) -> Any:
         """Saves image data to the specified filepath"""
         adata = data.copy()
-        return adata.write(self._filepath)
+        return adata.write(self.path)
 
     def _describe(self) -> Dict[str, Any]:
         """Returns a dict that describes the attributes of the dataset."""
