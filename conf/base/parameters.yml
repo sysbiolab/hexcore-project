@@ -2,3 +2,4 @@ adata_ref_filter:
   cell_count_cutoff: 5
   cell_percentage_cutoff2: 0.3
   nonz_mean_cutoff: 1.12
+  n_samples_subset: 1000
