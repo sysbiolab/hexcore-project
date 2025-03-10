@@ -88,16 +88,9 @@ def plot_genes_expression_distribution(adata_ref: AnnData, andata_ref_disnorm: A
     """
     fig, axes = plt.subplots(1, 2, figsize=(16, 6))
 
-    # Converte para array denso, se for uma matriz esparsa
-    if scipy.sparse.issparse(adata_ref.X):
-        gene_expression_values_ref = adata_ref.X.toarray().flatten()
-    else:
-        gene_expression_values_ref = adata_ref.X.flatten()
-
-    if scipy.sparse.issparse(andata_ref_disnorm.X):
-        gene_expression_values_ref_disnorm = andata_ref_disnorm.X.toarray().flatten()
-    else:
-        gene_expression_values_ref_disnorm = andata_ref_disnorm.X.flatten()
+    # Obtém os valores de expressão gênica sem converter para array denso
+    gene_expression_values_ref = adata_ref.X.data if scipy.sparse.issparse(adata_ref.X) else adata_ref.X.flatten()
+    gene_expression_values_ref_disnorm = andata_ref_disnorm.X.data if scipy.sparse.issparse(andata_ref_disnorm.X) else andata_ref_disnorm.X.flatten()
 
     # Cria o histograma para adata_ref
     sns.histplot(gene_expression_values_ref, bins=100, kde=True, ax=axes[0])
