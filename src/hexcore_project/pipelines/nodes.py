@@ -56,9 +56,7 @@ def setup_adata_ref_signature(multi_tissue_tumor_microenvironment_atlas, adata_r
                             nonz_mean_cutoff=adata_ref_params['nonz_mean_cutoff'])
                             
 
-    # filter the object
-
-    # Aplica os filtros de genes
+    # Aplica os filtros de genes caso a função filter_genes não esteja funcionando
     # fonte: https://docs.scvi-tools.org/en/stable/tutorials/notebooks/spatial/cell2location_lymph_node_spatial_tutorial.html
     # Filtro hardcoded por conta de a função filter_genes não estar rolando
 
@@ -68,9 +66,10 @@ def setup_adata_ref_signature(multi_tissue_tumor_microenvironment_atlas, adata_r
     #     ((adata_ref.X > 0).sum(axis=0) / adata_ref.n_obs > 0.0005)   # Expressão > 0 em pelo menos 0.05% das células
     # )
 
+    # adata_ref = adata_ref[:, gene_filter].copy()
+
     # Filtra o AnnData com base nos genes selecionados
     adata_ref = adata_ref[:, selected].copy()
-    # adata_ref = adata_ref[:, gene_filter].copy()
 
 
     return adata_ref
