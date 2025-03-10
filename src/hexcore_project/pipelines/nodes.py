@@ -72,7 +72,7 @@ def desnormalize_log1p(adata: AnnData) -> AnnData:
     adata = adata.copy()  # Evita modificar o objeto original
     
     if sp.issparse(adata.X):
-        adata.X = sp.csr_matrix(np.expm1(adata.X.toarray()))  # Converte para denso antes da transformação
+        adata.X.data = np.expm1(adata.X.data)  # Aplica a transformação diretamente nos dados esparsos
     else:
         adata.X = np.expm1(adata.X)
     
