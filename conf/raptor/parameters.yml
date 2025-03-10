@@ -5,3 +5,9 @@ model_cell_type_signatures:
   batch_key: 'X_scvi_batch'
   labels_key: 'author_cell_type'
   categorical_covariate_keys: 'assay'
+
+adata_ref_filter:
+  cell_count_cutoff: 5
+  cell_percentage_cutoff2: 0.3
+  nonz_mean_cutoff: 1.12
+  n_samples_subset: 0 # monta o dataset completo
