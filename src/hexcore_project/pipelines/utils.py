@@ -1,3 +1,4 @@
+from scipy.sparse import diags
 import scanpy as sc
 import scipy.sparse as sp
 from anndata import AnnData
@@ -49,51 +50,64 @@ def plot_filter_genes(adata, cell_count_cutoff, cell_percentage_cutoff2, nonz_me
     
     return plt
 
-def desnormalize_log1p(adata: AnnData) -> AnnData:
+# ------------------------- deprecated
+def desnormalize_log1p(adata: AnnData, layer_src: str, layer_trg: str) -> AnnData:
     """
+    Normalização aplicada pelo autor: https://github.com/bioinformatics-inca/MyeloidDerivedCells_in_TME/blob/822912bfd6487b86cca875324c0ab231405d7423/scRNA-seq/02_Integration/Integration.py#L33C1-L44C2
     Aplica a transformação inversa de log1p (exp(x) - 1) para recuperar valores aproximados das contagens originais.
 
     Parâmetros:
-    - adata: AnnData contendo a matriz de expressão gênica normalizada com log1p.
+    - adata: AnnData contendo a matriz de expressão gênica normalizada.
 
     Retorna:
     - Um novo objeto AnnData com a matriz desnormalizada.
     """
-    adata = adata.copy()  # Evita modificar o objeto original
+    adata = adata.copy()
     
-    if sp.issparse(adata.X):
-        adata.X.data = np.expm1(adata.X.data)  # Aplica a transformação diretamente nos dados esparsos
-    else:
-        adata.X = np.expm1(adata.X)
+    # Armazenar a matriz original normalizada em uma camada
+    adata.layers["author_expression"] = adata.X.copy()
+
+    X_log = adata.X
+    # Reverter a transformação log1p mantendo esparsidade
+    X_norm = X_log.expm1()
+
+    # Estimar os fatores de escala por célula (cada linha representa uma célula)
+    scaling_factors = adata.obs["nCount_RNA"].values / 1e4
+
+    # Criar uma matriz diagonal esparsa com os fatores de escala
+    scaling_matrix = diags(scaling_factors)
+    X_counts = scaling_matrix @ X_norm
+    adata.X = X_counts
     
     return adata
 
-def plot_genes_expression_distribution(adata_ref: AnnData, andata_ref_disnorm: AnnData) -> plt:
+def plot_genes_expression_distribution(adata_ref: AnnData, layer_src: str, layer_trg: str) -> plt:
     """
-    Plota a distribuição de expressão gênica para um conjunto de genes para dois objetos AnnData.
+    Plota a distribuição de expressão gênica para diferentes layers do anndata.
 
     Parâmetros:
     - adata_ref: AnnData contendo a matriz de expressão gênica original.
-    - andata_ref_disnorm: AnnData contendo a matriz de expressão gênica desnormalizada.
+    - layer_src: Nome da camada contendo a matriz de expressão gênica original.
+    - layer_trg: Nome da camada contendo a matriz de expressão gênica desnormalizada.
     """
     fig, axes = plt.subplots(1, 2, figsize=(16, 6))
 
     # Obtém os valores de expressão gênica sem converter para array denso
-    gene_expression_values_ref = adata_ref.X.data if sp.issparse(adata_ref.X) else adata_ref.X.flatten()
-    gene_expression_values_ref_disnorm = andata_ref_disnorm.X.data if sp.issparse(andata_ref_disnorm.X) else andata_ref_disnorm.X.flatten()
+    gene_expression_values_src = adata_ref.layers[layer_src].data
+    gene_expression_values_target = adata_ref.layers[layer_trg].data
 
     # Cria o histograma para adata_ref
-    sns.histplot(gene_expression_values_ref, bins=100, kde=True, ax=axes[0])
+    sns.histplot(gene_expression_values_src, bins=100, kde=True, ax=axes[0])
     axes[0].set_xlabel("Nível de expressão gênica")
     axes[0].set_ylabel("Frequência")
-    axes[0].set_title("Distribuição de todas as expressões gênicas (Dataset Original)")
+    axes[0].set_title("Distribuição de todas as expressões gênicas (Normalizada pelo autor)")
     axes[0].set_yscale("log")  # Escala logarítmica no eixo Y para melhor visualização
 
     # Cria o histograma para andata_ref_disnorm
-    sns.histplot(gene_expression_values_ref_disnorm, bins=100, kde=True, ax=axes[1])
+    sns.histplot(gene_expression_values_target, bins=100, kde=True, ax=axes[1])
     axes[1].set_xlabel("Nível de expressão gênica")
     axes[1].set_ylabel("Frequência")
-    axes[1].set_title("Distribuição de todas as expressões gênicas (Desnormalizada)")
+    axes[1].set_title("Distribution of all gene expressions (Contagens originais)")
     axes[1].set_yscale("log")  # Escala logarítmica no eixo Y para melhor visualização
 
     plt.tight_layout()

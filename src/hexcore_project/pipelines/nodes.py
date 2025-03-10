@@ -2,6 +2,8 @@ from cell2location.utils.filtering import filter_genes
 from cell2location.models import RegressionModel
 import cell2location
 import numpy as np
+from hexcore_project.pipelines import utils
+
 
 n_samples = 1000  # Número de células que você quer selecionar
 
@@ -14,47 +16,35 @@ def setup_adata_ref_signature(multi_tissue_tumor_microenvironment_atlas, n_sampl
     # rename genes to ENSEMBL ID for correct matching between single cell and spatial data
     multi_tissue_tumor_microenvironment_atlas.var['SYMBOL'] = multi_tissue_tumor_microenvironment_atlas.var['feature_name']
 
-    del multi_tissue_tumor_microenvironment_atlas.raw
-
     adata_ref = multi_tissue_tumor_microenvironment_atlas.copy()
 
-    # Filtra todos os subtipos presentes no tecido de mama e depois disso seleciona de todo o dataset esses subtipos
-    adata_ref = adata_ref[adata_ref.obs['author_cell_type'].isin(adata_ref[adata_ref.obs['tissue'] == 'breast'].obs['author_cell_type'])]
-
-    # Filtra as células pelo numero de amostras
+    # Filtra as células pelo numero de amostras definido
     if n_samples_subset > 0:
         indices = np.random.choice(adata_ref.n_obs, n_samples_subset, replace=False)  # Seleciona índices aleatórios
         adata_ref = adata_ref[indices, :]  
 
-    # Desnormaliza a matriz de expressão gênica
-    adata_ref_desnorm = desnormalize_log1p(adata_ref).copy()
+    # Convertendo adata_ref.raw.X de float32 para int e movendo para X, mantendo a versão original em 'autor_expression'.
+    # Criar uma cópia de raw.X em uma nova camada antes da conversão
+    adata_ref.layers["normalized_expression"] = adata_ref.X.copy() 
 
-    return [adata_ref_desnorm, plot_genes_expression_distribution(adata_ref, adata_ref_desnorm)]
+    # Converter para int32
+    adata_ref.layers["counts"] = adata_ref.raw.X.astype(np.int32)
+
+    return [adata_ref, utils.plot_genes_expression_distribution(adata_ref, "normalized_expression", "counts")]
 
 def filter_genes_for_signature_model(adata_ref, adata_ref_params):
-    # fonte: https://docs.scvi-tools.org/en/stable/tutorials/notebooks/spatial/cell2location_lymph_node_spatial_tutorial.html
+    # Fonte: https://docs.scvi-tools.org/en/stable/tutorials/notebooks/spatial/cell2location_lymph_node_spatial_tutorial.html
     # Filtra os genes com base nos parâmetros
 
     selected = filter_genes(adata_ref, 
                             cell_count_cutoff=adata_ref_params['cell_count_cutoff'], 
                             cell_percentage_cutoff2=adata_ref_params['cell_percentage_cutoff2'], 
                             nonz_mean_cutoff=adata_ref_params['nonz_mean_cutoff'])
-    
-    # Aplica os filtros de genes caso a função filter_genes não esteja funcionando
-    # Filtro hardcoded por conta de a função filter_genes não estar rolando
-
-    gene_filter = (
-        ((adata_ref.X > 0).sum(axis=0) / adata_ref.n_obs > 0.05) &  # Expressão > 0 em pelo menos 5% das células
-        (np.array(adata_ref.X.mean(axis=0)).flatten() > 1.1) &       # Média de expressão > 1.1
-        ((adata_ref.X > 0).sum(axis=0) / adata_ref.n_obs > 0.0005)   # Expressão > 0 em pelo menos 0.05% das células
-    )
-
-    # adata_ref = adata_ref[:, gene_filter].copy()
 
     # Filtra o AnnData com base nos genes selecionados
     adata_ref = adata_ref[:, selected].copy()
 
-    return [adata_ref, plot_filter_genes(adata_ref, 
+    return [adata_ref, utils.plot_filter_genes(adata_ref, 
                                          adata_ref_params['cell_count_cutoff'], 
                                          adata_ref_params['cell_percentage_cutoff2'], 
                                          adata_ref_params['nonz_mean_cutoff'])]
@@ -62,6 +52,7 @@ def filter_genes_for_signature_model(adata_ref, adata_ref_params):
 def create_signatures_model(adata_ref, params):
     # prepare anndata for the regression model
     cell2location.models.RegressionModel.setup_anndata(adata=adata_ref,
+                            layer='counts', # Use layer recovered from raw data 
                             # 10X reaction / sample / batch
                             batch_key=params['batch_key'],
                             # cell type, covariate used for constructing signatures
@@ -76,4 +67,6 @@ def create_signatures_model(adata_ref, params):
         adata_ref, sample_kwargs={'num_samples': params['num_samples'], 'batch_size': params['batch_size']}
     )
 
-    return adata_ref, model_cell_type_signatures, model_cell_type_signatures.plot_history(20)
+    final_adata = adata_ref.copy()
+
+    return final_adata, model_cell_type_signatures, model_cell_type_signatures.plot_history(20)
