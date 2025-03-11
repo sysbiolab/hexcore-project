@@ -7,6 +7,32 @@ import seaborn as sns
 import numpy as np
 import matplotlib
 
+def plot_history(model, iter_start=0, iter_end=-1, ax=None):
+        r"""Plot training history
+        Parameters
+        ----------
+        iter_start
+            omit initial iterations from the plot
+        iter_end
+            omit last iterations from the plot
+        ax
+            matplotlib axis
+        """
+        if ax is None:
+            ax = plt.gca()
+        if iter_end == -1:
+            iter_end = len(model.history_["elbo_train"])
+
+        ax.plot(
+            np.array(model.history_["elbo_train"].index[iter_start:iter_end]),
+            np.array(model.history_["elbo_train"].values.flatten())[iter_start:iter_end],
+            label="train",
+        )
+        ax.legend()
+        ax.set_xlim(0, len(model.history_["elbo_train"]))
+        ax.set_xlabel("Training epochs")
+        ax.set_ylabel("-ELBO loss")
+        return plt
 
 def plot_filter_genes(adata, cell_count_cutoff, cell_percentage_cutoff2, nonz_mean_cutoff):
     

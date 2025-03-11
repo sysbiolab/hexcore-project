@@ -67,6 +67,4 @@ def create_signatures_model(adata_ref, params):
         adata_ref, sample_kwargs={'num_samples': params['num_samples'], 'batch_size': params['batch_size']}
     )
 
-    final_adata = adata_ref.copy()
-
-    return final_adata, model_cell_type_signatures, model_cell_type_signatures.plot_history(20)
+    return adata_ref, model_cell_type_signatures, utils.plot_history(model=model_cell_type_signatures, iter_start=20)

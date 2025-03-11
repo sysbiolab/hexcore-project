@@ -25,8 +25,8 @@ adata_ref_with_signatures:
     layer: final 
 
 model_cell_type_signatures:
-  type: kedro_datasets_experimental.pytorch.PyTorchDataset
-  filepath: data/models/model_cell_type_signatures.pt
+  type: hexcore_project.datasets.scvi_model.ScviModel
+  filepath: data/models/model_cell_type_signatures
 
 adata_ref_gene_expression_distributions:
   type: matplotlib.MatplotlibWriter

@@ -6,6 +6,7 @@ from typing import Any, Dict
 import scanpy as sc
 import logging
 import os
+from scvi.model.base import BaseModelClass
 
 from kedro.io.core import (
     Version,
@@ -15,40 +16,35 @@ from kedro.io.core import (
 
 logger = logging.getLogger(__name__)
 
-class AnnDataset(AbstractDataset):
+class ScviModel(AbstractDataset):
     def __init__(self,         
         *,
-        filepath: str,
-        url: str | None = None,
+        filepath: str | None = None,
         tags: list[str] = [],
         metadata: dict[str, Any] | None = None,) -> None:
-        """Creates a new instance of AnnDataset to load / save data for given filepath or url.
+        """Creates a new instance of ScviModel to load / save model for given filepath.
 
         Args:
             filepath: The location of the h5 file to load / save data.
-            url: The url to download the h5 file from.
         """
         # parse the path and protocol (e.g. file, http, s3, etc.)
         protocol, path = get_protocol_and_path(filepath)
         self._protocol = protocol
-        self.url = url
         self.path = path
         self._filepath = PurePosixPath(path)
         self._fs = fsspec.filesystem(self._protocol)
         self.metadata = metadata
         self.tags = tags
     
-    def _load(self) -> Any:
-        return sc.read(
-            self._filepath,
-            backup_url=self.url
-        )
+    def _load(self) -> BaseModelClass:
+        return 
     
-    def _save(self, data) -> Any:
+    def _save(self, model: BaseModelClass):
         """Saves image data to the specified filepath"""
-        adata = data.copy()
+        # TODO: versioning and add metadata to the model
         os.makedirs(os.path.dirname(self.path), exist_ok=True)
-        return adata.write(self.path)
+
+        return model.save(f"{self.path}", overwrite=True)
 
     def _describe(self) -> Dict[str, Any]:
         """Returns a dict that describes the attributes of the dataset."""
