@@ -156,3 +156,4 @@ venv.bak/
 # mlflow local runs
 mlruns/*
 *.h5ad
+!data/output/*.h5ad
