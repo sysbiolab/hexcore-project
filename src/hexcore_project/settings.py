@@ -41,7 +41,6 @@ scvi.settings.batch_size = 512
 scvi.settings.progress_bar_style = "rich"
 scvi.settings.dl_num_workers = 16
 
-torch.backends.cudnn.benchmark = True
 torch.set_float32_matmul_precision('high')
 
 torch.cuda.empty_cache()  # Limpa cache de memória antiga
