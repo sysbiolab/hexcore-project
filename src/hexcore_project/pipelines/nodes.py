@@ -18,6 +18,9 @@ def setup_adata_ref_signature(multi_tissue_tumor_microenvironment_atlas, n_sampl
 
     adata_ref = multi_tissue_tumor_microenvironment_atlas.copy()
 
+    # Filtra todos os subtipos presentes no tecido de mama e depois disso seleciona de todo o dataset esses subtipos
+    adata_ref = adata_ref[adata_ref.obs['author_cell_type'].isin(adata_ref[adata_ref.obs['tissue'] == 'breast'].obs['author_cell_type'])]
+
     # Filtra as células pelo numero de amostras definido
     if n_samples_subset > 0:
         indices = np.random.choice(adata_ref.n_obs, n_samples_subset, replace=False)  # Seleciona índices aleatórios
