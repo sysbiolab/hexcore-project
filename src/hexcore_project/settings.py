@@ -30,6 +30,17 @@ from kedro_viz.integrations.kedro.sqlite_store import SQLiteStore
 from pathlib import Path
 import os
 import socket
+
+
+import scvi
+import torch
+
+
+scvi.settings.progress_bar_style = "rich"
+scvi.settings.dl_num_workers = 31
+torch.set_float32_matmul_precision('high')
+
+
 hostname = socket.gethostname()
 
 os.environ["KEDRO_SQLITE_STORE_USERNAME"] = hostname
