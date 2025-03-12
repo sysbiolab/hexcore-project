@@ -36,9 +36,12 @@ import scvi
 import torch
 
 
+scvi.settings.num_threads = 31
+scvi.settings.batch_size = 256
 scvi.settings.progress_bar_style = "rich"
 scvi.settings.dl_num_workers = 31
 torch.set_float32_matmul_precision('high')
+
 
 
 hostname = socket.gethostname()
