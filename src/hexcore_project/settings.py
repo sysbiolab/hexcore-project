@@ -37,11 +37,17 @@ import torch
 
 
 scvi.settings.num_threads = 31
-scvi.settings.batch_size = 256
+scvi.settings.batch_size = 512
 scvi.settings.progress_bar_style = "rich"
-scvi.settings.dl_num_workers = 31
+scvi.settings.dl_num_workers = 16
+
+torch.backends.cudnn.benchmark = True
 torch.set_float32_matmul_precision('high')
 
+torch.cuda.empty_cache()  # Limpa cache de memória antiga
+torch.cuda.memory_allocated()  # Verifica memória usada
+torch.cuda.memory_reserved()  # Verifica memória reservada
+torch.cuda.set_per_process_memory_fraction(0.95, device=0)
 
 
 hostname = socket.gethostname()
