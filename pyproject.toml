@@ -6,7 +6,7 @@ authors = ["Victor Apolonio <victor.henrique.apolonio@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "<=3.10"
 ipython = ">=8.10"
 jupyterlab = ">=3.0"
 kedro-datasets = {extras = ["experimental-pytorch"], version = "^6.0.0"}
