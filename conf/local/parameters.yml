@@ -2,7 +2,7 @@ model_cell_type_signatures:
   epochs: 1
   num_samples: 1000
   batch_size: 2500
-  batch_key: 'X_scvi_batch'
+  batch_key: 'batch'
   labels_key: 'author_cell_type'
   categorical_covariate_keys: 'assay'
 

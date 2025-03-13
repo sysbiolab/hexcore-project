@@ -3,7 +3,7 @@
 from kedro.framework.project import find_pipelines
 from kedro.pipeline import Pipeline
 
-from hexcore_project.pipelines import pipeline
+from hexcore_project.pipelines.cell_signature import pipeline
 
 def register_pipelines() -> dict[str, Pipeline]:
     """Register the project's pipelines.

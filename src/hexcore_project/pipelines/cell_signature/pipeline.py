@@ -1,5 +1,5 @@
 from kedro.pipeline import Pipeline, node
-from hexcore_project.pipelines.nodes import setup_adata_ref_signature, create_signatures_model, filter_genes_for_signature_model
+from hexcore_project.pipelines.cell_signature.nodes import setup_adata_ref_signature, create_signatures_model, filter_genes_for_signature_model
 
 
 def create_pipeline(**kwargs):

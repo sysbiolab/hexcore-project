@@ -4,10 +4,6 @@ import cell2location
 import numpy as np
 from hexcore_project.pipelines import utils
 
-
-n_samples = 1000  # Número de células que você quer selecionar
-
-
 import matplotlib  
 matplotlib.use('Agg')  # Backend não interativo
 
