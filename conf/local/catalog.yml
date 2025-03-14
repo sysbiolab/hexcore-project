@@ -24,6 +24,15 @@ adata_ref_with_signatures:
   metadata:
     layer: final 
 
+adata_viz_normal_tissue_filtered:
+  type: hexcore_project.datasets.anndata.AnnDataset
+  filepath: data/filtered/adata_viz/normal_tissue_filtered.h5ad
+  metadata:
+    layer: filtered 
+
+inference_average:
+  type: MemoryDataset
+
 model_cell_type_signatures:
   type: hexcore_project.datasets.scvi_model.ScviModel
   filepath: data/models/model_cell_type_signatures
