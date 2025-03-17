@@ -1,0 +1,21 @@
+{
+  "code": "def filter_genes_for_signature_model(adata_ref, adata_ref_params):\n    # Fonte: https://docs.scvi-tools.org/en/stable/tutorials/notebooks/spatial/cell2location_lymph_node_spatial_tutorial.html\n    # Filtra os genes com base nos parâmetros\n\n    selected = filter_genes(adata_ref, \n                            cell_count_cutoff=adata_ref_params['cell_count_cutoff'], \n                            cell_percentage_cutoff2=adata_ref_params['cell_percentage_cutoff2'], \n                            nonz_mean_cutoff=adata_ref_params['nonz_mean_cutoff'])\n\n    # Filtra o AnnData com base nos genes selecionados\n    adata_ref = adata_ref[:, selected].copy()\n\n    return [adata_ref, utils.plot_filter_genes(adata_ref, \n                                         adata_ref_params['cell_count_cutoff'], \n                                         adata_ref_params['cell_percentage_cutoff2'], \n                                         adata_ref_params['nonz_mean_cutoff'])]\n",
+  "filepath": "hexcore-project/src/hexcore_project/pipelines/cell_signature/nodes.py",
+  "parameters": {
+    "adata_ref_filter": {
+      "cell_count_cutoff": 5,
+      "cell_percentage_cutoff2": 0.3,
+      "nonz_mean_cutoff": 1.12,
+      "n_samples_subset": 1000
+    }
+  },
+  "run_command": "kedro run --to-nodes='filter_genes_for_signature_model'",
+  "inputs": [
+    "adata_ref",
+    "params:adata_ref_filter"
+  ],
+  "outputs": [
+    "adata_ref_filtered",
+    "adata_ref_filtered_genes"
+  ]
+}

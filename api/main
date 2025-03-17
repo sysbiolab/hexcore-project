@@ -1,0 +1,790 @@
+{
+  "nodes": [
+    {
+      "id": "8e63d0af",
+      "name": "setup_reference_signature_dataset",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "adata_ref_filter.n_samples_subset": 1000
+      }
+    },
+    {
+      "id": "7b16de9d",
+      "name": "multi_tissue_tumor_microenvironment_atlas",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "b2bffe1e",
+      "name": "params:adata_ref_filter.n_samples_subset",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "9424abce",
+      "name": "adata_ref",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "0832bb49",
+      "name": "adata_ref_gene_expression_distributions",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "matplotlib.matplotlib_writer.MatplotlibWriter",
+      "stats": null
+    },
+    {
+      "id": "9a3ece98",
+      "name": "filter_genes_for_signature_model",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "adata_ref_filter": {
+          "cell_count_cutoff": 5,
+          "cell_percentage_cutoff2": 0.3,
+          "nonz_mean_cutoff": 1.12,
+          "n_samples_subset": 1000
+        }
+      }
+    },
+    {
+      "id": "780517cf",
+      "name": "params:adata_ref_filter",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "509768ef",
+      "name": "adata_ref_filtered",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "5e883ef7",
+      "name": "adata_ref_filtered_genes",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "matplotlib.matplotlib_writer.MatplotlibWriter",
+      "stats": null
+    },
+    {
+      "id": "c99b73b9",
+      "name": "create_signature_model",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "model_cell_type_signatures": {
+          "epochs": 1,
+          "num_samples": 1000,
+          "batch_size": 2500,
+          "batch_key": "batch",
+          "labels_key": "author_cell_type",
+          "categorical_covariate_keys": "assay"
+        }
+      }
+    },
+    {
+      "id": "168acbea",
+      "name": "params:model_cell_type_signatures",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "afe34018",
+      "name": "adata_ref_with_signatures",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "c2fa0eef",
+      "name": "model_cell_type_signatures",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.scvi_model.ScviModel",
+      "stats": null
+    },
+    {
+      "id": "89b828a1",
+      "name": "signature_model_elbo_loss",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "matplotlib.matplotlib_writer.MatplotlibWriter",
+      "stats": null
+    },
+    {
+      "id": "1308e1ee",
+      "name": "setup_visium_data_normal",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "adata_viz_normal": {
+          "url": "https://datasets.cellxgene.cziscience.com/3574c8a3-2bf8-4aa6-97b8-3c4a7751757a.h5ad",
+          "name": "normal"
+        }
+      }
+    },
+    {
+      "id": "4fae9a10",
+      "name": "params:adata_viz_normal",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "475d6a59",
+      "name": "adata_viz_normal_tissue_filtered",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "3808520f",
+      "name": "inference_average_normal",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 12098,
+        "columns": 43,
+        "file_size": null
+      }
+    },
+    {
+      "id": "9cb76ca9",
+      "name": "setup_visium_data_tumor",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "adata_viz_tumor": {
+          "url": "https://datasets.cellxgene.cziscience.com/6cffa6f2-fd1b-49ab-841e-5fcbeab669df.h5ad",
+          "name": "tumor"
+        }
+      }
+    },
+    {
+      "id": "ce8a205d",
+      "name": "params:adata_viz_tumor",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "7cf87198",
+      "name": "adata_viz_tumor_tissue_filtered",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "ded678fe",
+      "name": "inference_average_tumor",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 12098,
+        "columns": 43,
+        "file_size": null
+      }
+    },
+    {
+      "id": "9621cbf9",
+      "name": "run_cell2location_normal_model",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "model_cell_map": {
+          "batch_key": "sample",
+          "N_cells_per_location": 30,
+          "detection_alpha": 20,
+          "max_epochs": 1,
+          "batch_size": 124,
+          "train_size": 1,
+          "num_samples": 1
+        }
+      }
+    },
+    {
+      "id": "ee96f7ee",
+      "name": "params:model_cell_map",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "71b0afff",
+      "name": "map_model_normal",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.scvi_model.ScviModel",
+      "stats": null
+    },
+    {
+      "id": "516ff8a1",
+      "name": "adata_viz_normal_cell_abundance",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "cbc2b2e7",
+      "name": "map_model_elbo_loss_normal",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "matplotlib.matplotlib_writer.MatplotlibWriter",
+      "stats": null
+    },
+    {
+      "id": "341bc06a",
+      "name": "run_cell2location_tumor_model",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "model_cell_map": {
+          "batch_key": "sample",
+          "N_cells_per_location": 30,
+          "detection_alpha": 20,
+          "max_epochs": 1,
+          "batch_size": 124,
+          "train_size": 1,
+          "num_samples": 1
+        }
+      }
+    },
+    {
+      "id": "6450c71b",
+      "name": "map_model_tumor",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.scvi_model.ScviModel",
+      "stats": null
+    },
+    {
+      "id": "23ac95f9",
+      "name": "adata_viz_tumor_cell_abundance",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "73866776",
+      "name": "map_model_elbo_loss_tumor",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "matplotlib.matplotlib_writer.MatplotlibWriter",
+      "stats": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "8e63d0af",
+      "target": "9424abce"
+    },
+    {
+      "source": "9cb76ca9",
+      "target": "7cf87198"
+    },
+    {
+      "source": "7b16de9d",
+      "target": "8e63d0af"
+    },
+    {
+      "source": "afe34018",
+      "target": "1308e1ee"
+    },
+    {
+      "source": "341bc06a",
+      "target": "6450c71b"
+    },
+    {
+      "source": "7cf87198",
+      "target": "341bc06a"
+    },
+    {
+      "source": "9a3ece98",
+      "target": "509768ef"
+    },
+    {
+      "source": "ded678fe",
+      "target": "341bc06a"
+    },
+    {
+      "source": "341bc06a",
+      "target": "23ac95f9"
+    },
+    {
+      "source": "3808520f",
+      "target": "9621cbf9"
+    },
+    {
+      "source": "9a3ece98",
+      "target": "5e883ef7"
+    },
+    {
+      "source": "ce8a205d",
+      "target": "9cb76ca9"
+    },
+    {
+      "source": "9cb76ca9",
+      "target": "ded678fe"
+    },
+    {
+      "source": "9621cbf9",
+      "target": "71b0afff"
+    },
+    {
+      "source": "475d6a59",
+      "target": "9621cbf9"
+    },
+    {
+      "source": "8e63d0af",
+      "target": "0832bb49"
+    },
+    {
+      "source": "ee96f7ee",
+      "target": "9621cbf9"
+    },
+    {
+      "source": "c99b73b9",
+      "target": "c2fa0eef"
+    },
+    {
+      "source": "afe34018",
+      "target": "9cb76ca9"
+    },
+    {
+      "source": "780517cf",
+      "target": "9a3ece98"
+    },
+    {
+      "source": "168acbea",
+      "target": "c99b73b9"
+    },
+    {
+      "source": "c99b73b9",
+      "target": "89b828a1"
+    },
+    {
+      "source": "509768ef",
+      "target": "c99b73b9"
+    },
+    {
+      "source": "4fae9a10",
+      "target": "1308e1ee"
+    },
+    {
+      "source": "9621cbf9",
+      "target": "cbc2b2e7"
+    },
+    {
+      "source": "1308e1ee",
+      "target": "3808520f"
+    },
+    {
+      "source": "9621cbf9",
+      "target": "516ff8a1"
+    },
+    {
+      "source": "b2bffe1e",
+      "target": "8e63d0af"
+    },
+    {
+      "source": "9424abce",
+      "target": "9a3ece98"
+    },
+    {
+      "source": "c99b73b9",
+      "target": "afe34018"
+    },
+    {
+      "source": "ee96f7ee",
+      "target": "341bc06a"
+    },
+    {
+      "source": "1308e1ee",
+      "target": "475d6a59"
+    },
+    {
+      "source": "341bc06a",
+      "target": "73866776"
+    }
+  ],
+  "layers": [],
+  "tags": [],
+  "pipelines": [
+    {
+      "id": "__default__",
+      "name": "__default__"
+    },
+    {
+      "id": "cell_signature",
+      "name": "cell_signature"
+    },
+    {
+      "id": "cell_map",
+      "name": "cell_map"
+    }
+  ],
+  "modular_pipelines": {
+    "__root__": {
+      "id": "__root__",
+      "name": "__root__",
+      "inputs": [],
+      "outputs": [],
+      "children": [
+        {
+          "id": "7cf87198",
+          "type": "data"
+        },
+        {
+          "id": "341bc06a",
+          "type": "task"
+        },
+        {
+          "id": "ded678fe",
+          "type": "data"
+        },
+        {
+          "id": "cbc2b2e7",
+          "type": "data"
+        },
+        {
+          "id": "b2bffe1e",
+          "type": "parameters"
+        },
+        {
+          "id": "9621cbf9",
+          "type": "task"
+        },
+        {
+          "id": "ee96f7ee",
+          "type": "parameters"
+        },
+        {
+          "id": "168acbea",
+          "type": "data"
+        },
+        {
+          "id": "73866776",
+          "type": "data"
+        },
+        {
+          "id": "8e63d0af",
+          "type": "task"
+        },
+        {
+          "id": "9cb76ca9",
+          "type": "task"
+        },
+        {
+          "id": "509768ef",
+          "type": "data"
+        },
+        {
+          "id": "9424abce",
+          "type": "data"
+        },
+        {
+          "id": "1308e1ee",
+          "type": "task"
+        },
+        {
+          "id": "ce8a205d",
+          "type": "data"
+        },
+        {
+          "id": "9a3ece98",
+          "type": "task"
+        },
+        {
+          "id": "516ff8a1",
+          "type": "data"
+        },
+        {
+          "id": "c2fa0eef",
+          "type": "data"
+        },
+        {
+          "id": "89b828a1",
+          "type": "data"
+        },
+        {
+          "id": "afe34018",
+          "type": "data"
+        },
+        {
+          "id": "780517cf",
+          "type": "parameters"
+        },
+        {
+          "id": "b2bffe1e",
+          "type": "data"
+        },
+        {
+          "id": "3808520f",
+          "type": "data"
+        },
+        {
+          "id": "4fae9a10",
+          "type": "parameters"
+        },
+        {
+          "id": "6450c71b",
+          "type": "data"
+        },
+        {
+          "id": "c99b73b9",
+          "type": "task"
+        },
+        {
+          "id": "ee96f7ee",
+          "type": "data"
+        },
+        {
+          "id": "475d6a59",
+          "type": "data"
+        },
+        {
+          "id": "0832bb49",
+          "type": "data"
+        },
+        {
+          "id": "5e883ef7",
+          "type": "data"
+        },
+        {
+          "id": "23ac95f9",
+          "type": "data"
+        },
+        {
+          "id": "168acbea",
+          "type": "parameters"
+        },
+        {
+          "id": "7b16de9d",
+          "type": "data"
+        },
+        {
+          "id": "71b0afff",
+          "type": "data"
+        },
+        {
+          "id": "ce8a205d",
+          "type": "parameters"
+        },
+        {
+          "id": "780517cf",
+          "type": "data"
+        },
+        {
+          "id": "4fae9a10",
+          "type": "data"
+        }
+      ]
+    }
+  },
+  "selected_pipeline": "__default__"
+}

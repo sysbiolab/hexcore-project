@@ -1,0 +1,8 @@
+{
+  "type": "matplotlib.matplotlib_writer.MatplotlibWriter",
+  "filepath": "/Users/victor.apolonio/code/sysbiolab/hexcore-project/data/reports/figures/signature_model_elbo_loss.png",
+  "run_command": "kedro run --to-outputs=signature_model_elbo_loss",
+  "preview": null,
+  "preview_type": null,
+  "stats": null
+}

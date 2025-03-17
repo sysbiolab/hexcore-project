@@ -1,0 +1,480 @@
+{
+  "nodes": [
+    {
+      "id": "afe34018",
+      "name": "adata_ref_with_signatures",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "1308e1ee",
+      "name": "setup_visium_data_normal",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "adata_viz_normal": {
+          "url": "https://datasets.cellxgene.cziscience.com/3574c8a3-2bf8-4aa6-97b8-3c4a7751757a.h5ad",
+          "name": "normal"
+        }
+      }
+    },
+    {
+      "id": "4fae9a10",
+      "name": "params:adata_viz_normal",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "475d6a59",
+      "name": "adata_viz_normal_tissue_filtered",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "3808520f",
+      "name": "inference_average_normal",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 12098,
+        "columns": 43,
+        "file_size": null
+      }
+    },
+    {
+      "id": "9cb76ca9",
+      "name": "setup_visium_data_tumor",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "adata_viz_tumor": {
+          "url": "https://datasets.cellxgene.cziscience.com/6cffa6f2-fd1b-49ab-841e-5fcbeab669df.h5ad",
+          "name": "tumor"
+        }
+      }
+    },
+    {
+      "id": "ce8a205d",
+      "name": "params:adata_viz_tumor",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "7cf87198",
+      "name": "adata_viz_tumor_tissue_filtered",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "ded678fe",
+      "name": "inference_average_tumor",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 12098,
+        "columns": 43,
+        "file_size": null
+      }
+    },
+    {
+      "id": "9621cbf9",
+      "name": "run_cell2location_normal_model",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "model_cell_map": {
+          "batch_key": "sample",
+          "N_cells_per_location": 30,
+          "detection_alpha": 20,
+          "max_epochs": 1,
+          "batch_size": 124,
+          "train_size": 1,
+          "num_samples": 1
+        }
+      }
+    },
+    {
+      "id": "ee96f7ee",
+      "name": "params:model_cell_map",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "71b0afff",
+      "name": "map_model_normal",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.scvi_model.ScviModel",
+      "stats": null
+    },
+    {
+      "id": "516ff8a1",
+      "name": "adata_viz_normal_cell_abundance",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "cbc2b2e7",
+      "name": "map_model_elbo_loss_normal",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "matplotlib.matplotlib_writer.MatplotlibWriter",
+      "stats": null
+    },
+    {
+      "id": "341bc06a",
+      "name": "run_cell2location_tumor_model",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "model_cell_map": {
+          "batch_key": "sample",
+          "N_cells_per_location": 30,
+          "detection_alpha": 20,
+          "max_epochs": 1,
+          "batch_size": 124,
+          "train_size": 1,
+          "num_samples": 1
+        }
+      }
+    },
+    {
+      "id": "6450c71b",
+      "name": "map_model_tumor",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.scvi_model.ScviModel",
+      "stats": null
+    },
+    {
+      "id": "23ac95f9",
+      "name": "adata_viz_tumor_cell_abundance",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "73866776",
+      "name": "map_model_elbo_loss_tumor",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "matplotlib.matplotlib_writer.MatplotlibWriter",
+      "stats": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "9cb76ca9",
+      "target": "7cf87198"
+    },
+    {
+      "source": "afe34018",
+      "target": "1308e1ee"
+    },
+    {
+      "source": "341bc06a",
+      "target": "6450c71b"
+    },
+    {
+      "source": "7cf87198",
+      "target": "341bc06a"
+    },
+    {
+      "source": "ded678fe",
+      "target": "341bc06a"
+    },
+    {
+      "source": "341bc06a",
+      "target": "23ac95f9"
+    },
+    {
+      "source": "3808520f",
+      "target": "9621cbf9"
+    },
+    {
+      "source": "ce8a205d",
+      "target": "9cb76ca9"
+    },
+    {
+      "source": "9cb76ca9",
+      "target": "ded678fe"
+    },
+    {
+      "source": "9621cbf9",
+      "target": "71b0afff"
+    },
+    {
+      "source": "475d6a59",
+      "target": "9621cbf9"
+    },
+    {
+      "source": "ee96f7ee",
+      "target": "9621cbf9"
+    },
+    {
+      "source": "afe34018",
+      "target": "9cb76ca9"
+    },
+    {
+      "source": "4fae9a10",
+      "target": "1308e1ee"
+    },
+    {
+      "source": "9621cbf9",
+      "target": "cbc2b2e7"
+    },
+    {
+      "source": "1308e1ee",
+      "target": "3808520f"
+    },
+    {
+      "source": "9621cbf9",
+      "target": "516ff8a1"
+    },
+    {
+      "source": "ee96f7ee",
+      "target": "341bc06a"
+    },
+    {
+      "source": "1308e1ee",
+      "target": "475d6a59"
+    },
+    {
+      "source": "341bc06a",
+      "target": "73866776"
+    }
+  ],
+  "layers": [],
+  "tags": [],
+  "pipelines": [
+    {
+      "id": "__default__",
+      "name": "__default__"
+    },
+    {
+      "id": "cell_signature",
+      "name": "cell_signature"
+    },
+    {
+      "id": "cell_map",
+      "name": "cell_map"
+    }
+  ],
+  "modular_pipelines": {
+    "__root__": {
+      "id": "__root__",
+      "name": "__root__",
+      "inputs": [],
+      "outputs": [],
+      "children": [
+        {
+          "id": "7cf87198",
+          "type": "data"
+        },
+        {
+          "id": "341bc06a",
+          "type": "task"
+        },
+        {
+          "id": "ded678fe",
+          "type": "data"
+        },
+        {
+          "id": "cbc2b2e7",
+          "type": "data"
+        },
+        {
+          "id": "9621cbf9",
+          "type": "task"
+        },
+        {
+          "id": "ee96f7ee",
+          "type": "parameters"
+        },
+        {
+          "id": "73866776",
+          "type": "data"
+        },
+        {
+          "id": "9cb76ca9",
+          "type": "task"
+        },
+        {
+          "id": "1308e1ee",
+          "type": "task"
+        },
+        {
+          "id": "ce8a205d",
+          "type": "data"
+        },
+        {
+          "id": "516ff8a1",
+          "type": "data"
+        },
+        {
+          "id": "afe34018",
+          "type": "data"
+        },
+        {
+          "id": "3808520f",
+          "type": "data"
+        },
+        {
+          "id": "4fae9a10",
+          "type": "parameters"
+        },
+        {
+          "id": "6450c71b",
+          "type": "data"
+        },
+        {
+          "id": "ee96f7ee",
+          "type": "data"
+        },
+        {
+          "id": "475d6a59",
+          "type": "data"
+        },
+        {
+          "id": "23ac95f9",
+          "type": "data"
+        },
+        {
+          "id": "71b0afff",
+          "type": "data"
+        },
+        {
+          "id": "ce8a205d",
+          "type": "parameters"
+        },
+        {
+          "id": "4fae9a10",
+          "type": "data"
+        }
+      ]
+    }
+  },
+  "selected_pipeline": "cell_map"
+}

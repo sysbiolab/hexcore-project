@@ -1,0 +1,8 @@
+{
+  "parameters": {
+    "adata_viz_normal": {
+      "url": "https://datasets.cellxgene.cziscience.com/3574c8a3-2bf8-4aa6-97b8-3c4a7751757a.h5ad",
+      "name": "normal"
+    }
+  }
+}

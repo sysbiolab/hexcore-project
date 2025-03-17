@@ -1,0 +1,16 @@
+{
+  "code": "def setup_adata_ref_signature(multi_tissue_tumor_microenvironment_atlas, n_samples_subset):\n    \n    # rename genes to ENSEMBL ID for correct matching between single cell and spatial data\n    multi_tissue_tumor_microenvironment_atlas.var['SYMBOL'] = multi_tissue_tumor_microenvironment_atlas.var['feature_name']\n\n    adata_ref = multi_tissue_tumor_microenvironment_atlas.copy()\n\n    # Filtra todos os subtipos presentes no tecido de mama e depois disso seleciona de todo o dataset esses subtipos\n    adata_ref = adata_ref[adata_ref.obs['author_cell_type'].isin(adata_ref[adata_ref.obs['tissue'] == 'breast'].obs['author_cell_type'])]\n\n    # Filtra as células pelo numero de amostras definido\n    if n_samples_subset > 0:\n        indices = np.random.choice(adata_ref.n_obs, n_samples_subset, replace=False)  # Seleciona índices aleatórios\n        adata_ref = adata_ref[indices, :]  \n\n    # Converter para int32\n    adata_ref.layers[\"counts\"] = sc.sparse.csr_matrix(adata_ref.raw.X.astype(np.int32))\n    adata_ref.layers[\"normalized_expression\"] = adata_ref.X.copy() if sc.sparse.issparse(adata_ref.X) else sc.sparse.csr_matrix(adata_ref.X)\n\n    return [adata_ref, utils.plot_genes_expression_distribution(adata_ref, \"normalized_expression\", \"counts\")]\n",
+  "filepath": "hexcore-project/src/hexcore_project/pipelines/cell_signature/nodes.py",
+  "parameters": {
+    "adata_ref_filter.n_samples_subset": 1000
+  },
+  "run_command": "kedro run --to-nodes='setup_reference_signature_dataset'",
+  "inputs": [
+    "multi_tissue_tumor_microenvironment_atlas",
+    "params:adata_ref_filter.n_samples_subset"
+  ],
+  "outputs": [
+    "adata_ref",
+    "adata_ref_gene_expression_distributions"
+  ]
+}

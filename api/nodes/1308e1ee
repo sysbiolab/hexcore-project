@@ -1,0 +1,19 @@
+{
+  "code": "def setup_visium_data(adata_ref_with_signatures, sample):    \n    inf_aver = adata_ref_with_signatures.varm['means_per_cluster_mu_fg'][[f'means_per_cluster_mu_fg_{i}' \\\n                                           for i in adata_ref_with_signatures.uns['mod']['factor_names']]]\n    inf_aver.columns = adata_ref_with_signatures.uns['mod']['factor_names']\n\n    adata_viz = sc.read(\n        f\"./data/raw/adata_viz/{sample['name']}.h5ad\",\n        backup_url=sample['url']\n    )\n\n    adata_viz.obs['sample'] = list(adata_viz.uns['spatial'].keys())[0]\n    adata_viz.var['SYMBOL'] = adata_viz.var['feature_name']\n\n    # find mitochondria-encoded (MT) genes\n    adata_viz.var['MT_gene'] = [gene.startswith('MT-') for gene in adata_viz.var['SYMBOL']]\n\n    # remove MT genes for spatial mapping (keeping their counts in the object)\n    adata_viz.obsm['MT'] = adata_viz[:, adata_viz.var['MT_gene'].values].X.toarray()\n    adata_viz = adata_viz[:, ~adata_viz.var['MT_gene'].values]\n    \n    intersect = np.intersect1d(adata_viz.var_names, inf_aver.index)\n    \n    adata_viz = adata_viz[:, intersect].copy()\n    inf_aver = inf_aver.loc[intersect, :].copy()\n\n    return adata_viz, inf_aver\n",
+  "filepath": "hexcore-project/src/hexcore_project/pipelines/cell_map/nodes.py",
+  "parameters": {
+    "adata_viz_normal": {
+      "url": "https://datasets.cellxgene.cziscience.com/3574c8a3-2bf8-4aa6-97b8-3c4a7751757a.h5ad",
+      "name": "normal"
+    }
+  },
+  "run_command": "kedro run --to-nodes='setup_visium_data_normal'",
+  "inputs": [
+    "adata_ref_with_signatures",
+    "params:adata_viz_normal"
+  ],
+  "outputs": [
+    "adata_viz_normal_tissue_filtered",
+    "inference_average_normal"
+  ]
+}

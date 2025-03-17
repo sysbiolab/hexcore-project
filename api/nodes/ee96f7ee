@@ -1,0 +1,13 @@
+{
+  "parameters": {
+    "model_cell_map": {
+      "batch_key": "sample",
+      "N_cells_per_location": 30,
+      "detection_alpha": 20,
+      "max_epochs": 1,
+      "batch_size": 124,
+      "train_size": 1,
+      "num_samples": 1
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "datasets.anndata.AnnDataset",
+  "filepath": "/Users/victor.apolonio/code/sysbiolab/hexcore-project/data/output/adata_ref_with_signatures.h5ad",
+  "run_command": "kedro run --to-outputs=adata_ref_with_signatures",
+  "preview": null,
+  "preview_type": null,
+  "stats": null
+}

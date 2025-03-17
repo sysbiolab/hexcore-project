@@ -1,0 +1,8 @@
+{
+  "type": "datasets.anndata.AnnDataset",
+  "filepath": "/Users/victor.apolonio/code/sysbiolab/hexcore-project/data/raw/multi-tissue-tumor-microenvironment-atlas.h5ad",
+  "run_command": null,
+  "preview": null,
+  "preview_type": null,
+  "stats": null
+}

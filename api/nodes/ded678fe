@@ -1,0 +1,12 @@
+{
+  "type": "io.memory_dataset.MemoryDataset",
+  "filepath": null,
+  "run_command": "kedro run --to-outputs=inference_average_tumor",
+  "preview": null,
+  "preview_type": null,
+  "stats": {
+    "rows": 12098,
+    "columns": 43,
+    "file_size": null
+  }
+}

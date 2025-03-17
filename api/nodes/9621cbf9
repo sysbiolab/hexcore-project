@@ -1,0 +1,26 @@
+{
+  "code": "def run_cell2location_map_model(adata_viz, inf_aver, params):\n    cell2location.models.Cell2location.setup_anndata(adata=adata_viz, batch_key=params[\"batch_key\"])\n    # create and train the model\n    model_cell2location = cell2location.models.Cell2location(\n        adata_viz, cell_state_df=inf_aver,\n        # the expected average cell abundance: tissue-dependent\n        # hyper-prior which can be estimated from paired histology:\n        N_cells_per_location=params['N_cells_per_location'],\n        # hyperparameter controlling normalisation of\n        # within-experiment variation in RNA detection:\n        detection_alpha=params['detection_alpha']\n    )\n\n    model_cell2location.train(max_epochs=params['max_epochs'],\n        # train using full data (batch_size=None)\n        batch_size=params['batch_size'],\n        # use all data points in training because\n        # we need to estimate cell abundance at all locations\n        train_size=params['train_size']\n    )\n\n    adata_viz = model_cell2location.export_posterior(\n        adata_viz, sample_kwargs={'num_samples': params['num_samples'], 'batch_size': model_cell2location.adata.n_obs}\n    )\n\n    return model_cell2location, adata_viz, utils.plot_history(model=model_cell2location, iter_start=1000)\n",
+  "filepath": "hexcore-project/src/hexcore_project/pipelines/cell_map/nodes.py",
+  "parameters": {
+    "model_cell_map": {
+      "batch_key": "sample",
+      "N_cells_per_location": 30,
+      "detection_alpha": 20,
+      "max_epochs": 1,
+      "batch_size": 124,
+      "train_size": 1,
+      "num_samples": 1
+    }
+  },
+  "run_command": "kedro run --to-nodes='run_cell2location_normal_model'",
+  "inputs": [
+    "adata_viz_normal_tissue_filtered",
+    "inference_average_normal",
+    "params:model_cell_map"
+  ],
+  "outputs": [
+    "map_model_normal",
+    "adata_viz_normal_cell_abundance",
+    "map_model_elbo_loss_normal"
+  ]
+}

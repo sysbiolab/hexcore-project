@@ -1,0 +1,24 @@
+{
+  "code": "def create_signatures_model(adata_ref, params):\n    # prepare anndata for the regression model\n    cell2location.models.RegressionModel.setup_anndata(adata=adata_ref,\n                            layer='counts', # Use layer recovered from raw data \n                            # 10X reaction / sample / batch\n                            batch_key=params['batch_key'],\n                            # cell type, covariate used for constructing signatures\n                            labels_key=params['labels_key'],\n                            # multiplicative technical effects (platform, 3' vs 5', donor effect)\n                            categorical_covariate_keys=[params['categorical_covariate_keys']]\n                           )\n    model_cell_type_signatures = RegressionModel(adata_ref)\n    model_cell_type_signatures.train(max_epochs=params['epochs'])\n\n    adata_ref = model_cell_type_signatures.export_posterior(\n        adata_ref, sample_kwargs={'num_samples': params['num_samples'], 'batch_size': params['batch_size']}\n    )\n\n    return adata_ref, model_cell_type_signatures, utils.plot_history(model=model_cell_type_signatures, iter_start=20)\n",
+  "filepath": "hexcore-project/src/hexcore_project/pipelines/cell_signature/nodes.py",
+  "parameters": {
+    "model_cell_type_signatures": {
+      "epochs": 1,
+      "num_samples": 1000,
+      "batch_size": 2500,
+      "batch_key": "batch",
+      "labels_key": "author_cell_type",
+      "categorical_covariate_keys": "assay"
+    }
+  },
+  "run_command": "kedro run --to-nodes='create_signature_model'",
+  "inputs": [
+    "adata_ref_filtered",
+    "params:model_cell_type_signatures"
+  ],
+  "outputs": [
+    "adata_ref_with_signatures",
+    "model_cell_type_signatures",
+    "signature_model_elbo_loss"
+  ]
+}

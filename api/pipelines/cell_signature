@@ -1,0 +1,362 @@
+{
+  "nodes": [
+    {
+      "id": "8e63d0af",
+      "name": "setup_reference_signature_dataset",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "adata_ref_filter.n_samples_subset": 1000
+      }
+    },
+    {
+      "id": "7b16de9d",
+      "name": "multi_tissue_tumor_microenvironment_atlas",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "b2bffe1e",
+      "name": "params:adata_ref_filter.n_samples_subset",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "9424abce",
+      "name": "adata_ref",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "0832bb49",
+      "name": "adata_ref_gene_expression_distributions",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "matplotlib.matplotlib_writer.MatplotlibWriter",
+      "stats": null
+    },
+    {
+      "id": "9a3ece98",
+      "name": "filter_genes_for_signature_model",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "adata_ref_filter": {
+          "cell_count_cutoff": 5,
+          "cell_percentage_cutoff2": 0.3,
+          "nonz_mean_cutoff": 1.12,
+          "n_samples_subset": 1000
+        }
+      }
+    },
+    {
+      "id": "780517cf",
+      "name": "params:adata_ref_filter",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "509768ef",
+      "name": "adata_ref_filtered",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "5e883ef7",
+      "name": "adata_ref_filtered_genes",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "matplotlib.matplotlib_writer.MatplotlibWriter",
+      "stats": null
+    },
+    {
+      "id": "c99b73b9",
+      "name": "create_signature_model",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "task",
+      "modular_pipelines": null,
+      "parameters": {
+        "model_cell_type_signatures": {
+          "epochs": 1,
+          "num_samples": 1000,
+          "batch_size": 2500,
+          "batch_key": "batch",
+          "labels_key": "author_cell_type",
+          "categorical_covariate_keys": "assay"
+        }
+      }
+    },
+    {
+      "id": "168acbea",
+      "name": "params:model_cell_type_signatures",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "afe34018",
+      "name": "adata_ref_with_signatures",
+      "tags": [],
+      "pipelines": [
+        "cell_map",
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.anndata.AnnDataset",
+      "stats": null
+    },
+    {
+      "id": "c2fa0eef",
+      "name": "model_cell_type_signatures",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "datasets.scvi_model.ScviModel",
+      "stats": null
+    },
+    {
+      "id": "89b828a1",
+      "name": "signature_model_elbo_loss",
+      "tags": [],
+      "pipelines": [
+        "__default__",
+        "cell_signature"
+      ],
+      "type": "data",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": "matplotlib.matplotlib_writer.MatplotlibWriter",
+      "stats": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "b2bffe1e",
+      "target": "8e63d0af"
+    },
+    {
+      "source": "8e63d0af",
+      "target": "9424abce"
+    },
+    {
+      "source": "168acbea",
+      "target": "c99b73b9"
+    },
+    {
+      "source": "9a3ece98",
+      "target": "509768ef"
+    },
+    {
+      "source": "c99b73b9",
+      "target": "89b828a1"
+    },
+    {
+      "source": "509768ef",
+      "target": "c99b73b9"
+    },
+    {
+      "source": "7b16de9d",
+      "target": "8e63d0af"
+    },
+    {
+      "source": "9424abce",
+      "target": "9a3ece98"
+    },
+    {
+      "source": "9a3ece98",
+      "target": "5e883ef7"
+    },
+    {
+      "source": "c99b73b9",
+      "target": "afe34018"
+    },
+    {
+      "source": "8e63d0af",
+      "target": "0832bb49"
+    },
+    {
+      "source": "c99b73b9",
+      "target": "c2fa0eef"
+    },
+    {
+      "source": "780517cf",
+      "target": "9a3ece98"
+    }
+  ],
+  "layers": [],
+  "tags": [],
+  "pipelines": [
+    {
+      "id": "__default__",
+      "name": "__default__"
+    },
+    {
+      "id": "cell_signature",
+      "name": "cell_signature"
+    },
+    {
+      "id": "cell_map",
+      "name": "cell_map"
+    }
+  ],
+  "modular_pipelines": {
+    "__root__": {
+      "id": "__root__",
+      "name": "__root__",
+      "inputs": [],
+      "outputs": [],
+      "children": [
+        {
+          "id": "5e883ef7",
+          "type": "data"
+        },
+        {
+          "id": "780517cf",
+          "type": "parameters"
+        },
+        {
+          "id": "509768ef",
+          "type": "data"
+        },
+        {
+          "id": "9424abce",
+          "type": "data"
+        },
+        {
+          "id": "b2bffe1e",
+          "type": "data"
+        },
+        {
+          "id": "9a3ece98",
+          "type": "task"
+        },
+        {
+          "id": "b2bffe1e",
+          "type": "parameters"
+        },
+        {
+          "id": "168acbea",
+          "type": "parameters"
+        },
+        {
+          "id": "8e63d0af",
+          "type": "task"
+        },
+        {
+          "id": "7b16de9d",
+          "type": "data"
+        },
+        {
+          "id": "c99b73b9",
+          "type": "task"
+        },
+        {
+          "id": "c2fa0eef",
+          "type": "data"
+        },
+        {
+          "id": "0832bb49",
+          "type": "data"
+        },
+        {
+          "id": "780517cf",
+          "type": "data"
+        },
+        {
+          "id": "89b828a1",
+          "type": "data"
+        },
+        {
+          "id": "afe34018",
+          "type": "data"
+        },
+        {
+          "id": "168acbea",
+          "type": "data"
+        }
+      ]
+    }
+  },
+  "selected_pipeline": "cell_signature"
+}

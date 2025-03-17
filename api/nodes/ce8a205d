@@ -1,0 +1,8 @@
+{
+  "parameters": {
+    "adata_viz_tumor": {
+      "url": "https://datasets.cellxgene.cziscience.com/6cffa6f2-fd1b-49ab-841e-5fcbeab669df.h5ad",
+      "name": "tumor"
+    }
+  }
+}
