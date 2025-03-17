@@ -131,37 +131,6 @@ def plot_filter_genes(adata, cell_count_cutoff, cell_percentage_cutoff2, nonz_me
     
     return plt
 
-# ------------------------- deprecated
-def desnormalize_log1p(adata: AnnData, layer_src: str, layer_trg: str) -> AnnData:
-    """
-    Normalização aplicada pelo autor: https://github.com/bioinformatics-inca/MyeloidDerivedCells_in_TME/blob/822912bfd6487b86cca875324c0ab231405d7423/scRNA-seq/02_Integration/Integration.py#L33C1-L44C2
-    Aplica a transformação inversa de log1p (exp(x) - 1) para recuperar valores aproximados das contagens originais.
-
-    Parâmetros:
-    - adata: AnnData contendo a matriz de expressão gênica normalizada.
-
-    Retorna:
-    - Um novo objeto AnnData com a matriz desnormalizada.
-    """
-    adata = adata.copy()
-    
-    # Armazenar a matriz original normalizada em uma camada
-    adata.layers["author_expression"] = adata.X.copy()
-
-    X_log = adata.X
-    # Reverter a transformação log1p mantendo esparsidade
-    X_norm = X_log.expm1()
-
-    # Estimar os fatores de escala por célula (cada linha representa uma célula)
-    scaling_factors = adata.obs["nCount_RNA"].values / 1e4
-
-    # Criar uma matriz diagonal esparsa com os fatores de escala
-    scaling_matrix = diags(scaling_factors)
-    X_counts = scaling_matrix @ X_norm
-    adata.X = X_counts
-    
-    return adata
-
 def plot_genes_expression_distribution(adata_ref: AnnData, layer_src: str, layer_trg: str) -> plt:
     """
     Plota a distribuição de expressão gênica para diferentes layers do anndata.

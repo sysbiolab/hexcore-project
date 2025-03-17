@@ -1,3 +1,4 @@
+# RAW
 multi_tissue_tumor_microenvironment_atlas:
   type: hexcore_project.datasets.anndata.AnnDataset
   filepath: data/raw/multi-tissue-tumor-microenvironment-atlas.h5ad
@@ -6,6 +7,7 @@ multi_tissue_tumor_microenvironment_atlas:
     layer: raw
     publication: Guimarães et al. (2024) Nat Commun
 
+# Intermediate REMOVE?
 adata_ref:
   type: hexcore_project.datasets.anndata.AnnDataset
   filepath: data/filtered/adata_ref.h5ad
@@ -18,36 +20,87 @@ adata_ref_filtered:
   metadata:
     layer: filtered
 
-adata_ref_with_signatures:
-  type: hexcore_project.datasets.anndata.AnnDataset
-  filepath: data/output/adata_ref_with_signatures.h5ad
-  metadata:
-    layer: final 
+inference_average_tumor:
+  type: MemoryDataset
 
+inference_average_normal:
+  type: MemoryDataset
+
+
+# FILTERED
 adata_viz_normal_tissue_filtered:
   type: hexcore_project.datasets.anndata.AnnDataset
   filepath: data/filtered/adata_viz/normal_tissue_filtered.h5ad
   metadata:
     layer: filtered 
 
-inference_average:
-  type: MemoryDataset
+adata_viz_tumor_tissue_filtered:
+  type: hexcore_project.datasets.anndata.AnnDataset
+  filepath: data/filtered/adata_viz/tumor_tissue_filtered.h5ad
+  metadata:
+    layer: filtered 
 
+# MODELS
 model_cell_type_signatures:
   type: hexcore_project.datasets.scvi_model.ScviModel
   filepath: data/models/model_cell_type_signatures
 
+map_model_normal:
+  type: hexcore_project.datasets.scvi_model.ScviModel
+  filepath: data/models/map_model_normal
+
+map_model_tumor:
+  type: hexcore_project.datasets.scvi_model.ScviModel
+  filepath: data/models/map_model_tumor
+
+# OUTPUTS DATASETS
+
+adata_ref_with_signatures:
+  type: hexcore_project.datasets.anndata.AnnDataset
+  filepath: data/output/adata_ref_with_signatures.h5ad
+  metadata:
+    layer: final 
+
+adata_viz_normal_cell_abundance:
+  type: hexcore_project.datasets.anndata.AnnDataset
+  filepath: data/output/adata_viz/adata_viz_normal_cell_abundance.h5ad
+  metadata:
+    layer: final
+
+adata_viz_tumor_cell_abundance:
+  type: hexcore_project.datasets.anndata.AnnDataset
+  filepath: data/output/adata_viz/adata_viz_tumor_cell_abundance.h5ad
+  metadata:
+    layer: final
+
+# PLOTS
+
+# model control plots
+signature_model_elbo_loss:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/reports/figures/signature_model_elbo_loss.png
+  versioned: true
+
+map_model_elbo_loss_normal:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/reports/figures/map_model_elbo_loss_normal.png
+  versioned: true
+
+map_model_elbo_loss_tumor:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/reports/figures/map_model_elbo_loss_tumor.png
+  versioned: true
+
+# dataset control plots
 adata_ref_gene_expression_distributions:
   type: matplotlib.MatplotlibWriter
   filepath: data/reports/figures/adata_ref_gene_expression_distributions.png
   versioned: true
 
+
+# report plots
 adata_ref_filtered_genes:
   type: matplotlib.MatplotlibWriter
   filepath: data/reports/figures/adata_ref_filtered_genes.png
   versioned: true
 
-signature_model_elbo_loss:
-  type: matplotlib.MatplotlibWriter
-  filepath: data/reports/figures/signature_model_elbo_loss.png
-  versioned: true

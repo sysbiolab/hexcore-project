@@ -1,0 +1,8 @@
+
+adata_viz_normal:
+  url: 'https://datasets.cellxgene.cziscience.com/3574c8a3-2bf8-4aa6-97b8-3c4a7751757a.h5ad'
+  name: 'normal'
+
+adata_viz_tumor:
+  url: 'https://datasets.cellxgene.cziscience.com/6cffa6f2-fd1b-49ab-841e-5fcbeab669df.h5ad'
+  name: 'tumor'

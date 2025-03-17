@@ -6,6 +6,15 @@ model_cell_type_signatures:
   labels_key: 'author_cell_type'
   categorical_covariate_keys: 'assay'
 
+model_cell_map:
+  batch_key: 'sample'
+  N_cells_per_location: 30
+  detection_alpha: 20
+  max_epochs: 1
+  batch_size: 124
+  train_size: 1
+  num_samples: 1
+
 adata_ref_filter:
   cell_count_cutoff: 5
   cell_percentage_cutoff2: 0.3

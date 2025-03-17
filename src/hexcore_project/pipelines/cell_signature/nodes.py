@@ -3,6 +3,7 @@ from cell2location.models import RegressionModel
 import cell2location
 import numpy as np
 from hexcore_project.pipelines import utils
+import scanpy as sc
 
 import matplotlib  
 matplotlib.use('Agg')  # Backend não interativo
@@ -22,12 +23,9 @@ def setup_adata_ref_signature(multi_tissue_tumor_microenvironment_atlas, n_sampl
         indices = np.random.choice(adata_ref.n_obs, n_samples_subset, replace=False)  # Seleciona índices aleatórios
         adata_ref = adata_ref[indices, :]  
 
-    # Convertendo adata_ref.raw.X de float32 para int e movendo para X, mantendo a versão original em 'autor_expression'.
-    # Criar uma cópia de raw.X em uma nova camada antes da conversão
-    adata_ref.layers["normalized_expression"] = adata_ref.X.copy() 
-
     # Converter para int32
-    adata_ref.layers["counts"] = adata_ref.raw.X.astype(np.int32)
+    adata_ref.layers["counts"] = sc.sparse.csr_matrix(adata_ref.raw.X.astype(np.int32))
+    adata_ref.layers["normalized_expression"] = adata_ref.X.copy() if sc.sparse.issparse(adata_ref.X) else sc.sparse.csr_matrix(adata_ref.X)
 
     return [adata_ref, utils.plot_genes_expression_distribution(adata_ref, "normalized_expression", "counts")]
 

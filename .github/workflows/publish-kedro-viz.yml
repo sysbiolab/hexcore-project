@@ -1,0 +1,18 @@
+on:
+  push:
+    branches:
+      - "*"
+    paths-ignore:
+      - "*.md"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  publish-kedro-viz:
+    name: publish-kedro-viz
+    runs-on: ubuntu-latest
+    steps:
+      - name: publish-kedro-viz
+        uses: kedro-org/publish-kedro-viz@v1
